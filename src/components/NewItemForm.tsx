@@ -15,7 +15,9 @@ export default function NewItemForm(props: NewItemFormProps) {
   const inputRef = useFocus();
   const onEnterPressed = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key == "Enter") {
-      props.onAdded(text);
+      if (text !== null && text !== "") {
+        props.onAdded(text);
+      }
     }
   };
 

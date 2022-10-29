@@ -1,19 +1,33 @@
-import { useState } from 'react'
-import Card from './components/Card';
-import { Column } from './components/Column';
-import { AppContainer, CardContainer } from "./assets/styles";
-import AddNewItem from './components/AddNewItem';
+import { Column } from "./components/Column";
+import { AppContainer } from "./assets/styles";
+import AddNewItem from "./components/AddNewItem";
+import { useAppState } from "./utils/useAppState";
+import { ListActionType } from "./state/actions/ListAction";
+import { isEmptyOrSpaces } from "./utils/stringUtils";
 
 export function App() {
-  const [count, setCount] = useState(0)
+  const appState = useAppState();
 
-  const onItemAdded=(text: string)=>{
-    console.log(text + " has been added.!");
-  }
+  const onItemAdded = (text: string) => {
+    if (isEmptyOrSpaces(text)) {
+      alert("Please add a valid List name");
+      return;
+    }
+    appState.dispatch({
+      type: ListActionType.AddList,
+      payload: text,
+    });
+  };
 
   return (
     <AppContainer>
-      <Column text="Todo"></Column>
+      {appState.lists.map((column) => (
+        <Column
+          text={column.text}
+          id={column.listId}
+          key={column.listId}
+        ></Column>
+      ))}
       <AddNewItem
         addItemHint="+ Add new list"
         onAdded={onItemAdded}
@@ -21,4 +35,3 @@ export function App() {
     </AppContainer>
   );
 }
-

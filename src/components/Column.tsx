@@ -1,28 +1,46 @@
-import { ColumnContainer, ColumnTitle } from "../assets/styles"
+import { ColumnContainer, ColumnTitle } from "../assets/styles";
+import { ListActionType } from "../state/actions/ListAction";
+import { isEmptyOrSpaces } from "../utils/stringUtils";
+import { useAppState } from "../utils/useAppState";
 import AddNewItem from "./AddNewItem";
 import Card from "./Card";
 
-type ColumnProps = {
+interface ColumnProps {
+  id: string;
   text: string;
   children?: React.ReactNode;
-};
+}
 
 export const Column = (props: ColumnProps) => {
-  
-  const onItemAdded=(text: string)=>{
-    console.log(text + " has been added.!");
-  }
-  
+  const appState = useAppState();
+
+  const tasks = appState.getTasksByListId(props.id);
+
+  const onItemAdded = (text: string) => {
+    if (isEmptyOrSpaces(text)) {
+      alert("Please add a valid Task name");
+      return;
+    }
+    appState.dispatch({
+      type: ListActionType.AddTask,
+      payload: {
+        listId: props.id,
+        text: text,
+      },
+    });
+  };
+
   return (
-      <ColumnContainer>
-        <ColumnTitle>{props.text}</ColumnTitle>
-        <Card text="Lear React" />
-        <Card text="Lear CSS" />
-        <AddNewItem
-          addItemHint="+ Add another card"
-          onAdded={onItemAdded}
-          dark
-        ></AddNewItem>
-      </ColumnContainer>
-    );
+    <ColumnContainer>
+      <ColumnTitle>{props.text}</ColumnTitle>
+      {tasks.map((task) => (
+        <Card text={task.text} id={task.taskId} key={task.taskId} />
+      ))}
+      <AddNewItem
+        addItemHint="+ Add another card"
+        onAdded={onItemAdded}
+        dark
+      ></AddNewItem>
+    </ColumnContainer>
+  );
 };

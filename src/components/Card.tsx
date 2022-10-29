@@ -1,9 +1,10 @@
 import { CardContainer } from "../assets/styles";
 
-type CardProps = {
-    text: string;
+interface CardProps {
+  text: string;
+  id: string;
 }
 
-export default function Card(props : CardProps) {
+export default function Card(props: CardProps) {
   return <CardContainer>{props.text}</CardContainer>;
 }
