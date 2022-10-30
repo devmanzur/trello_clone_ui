@@ -1,5 +1,5 @@
 import { ColumnContainer, ColumnTitle } from "../assets/styles";
-import { ListActionType } from "../state/actions/ListAction";
+import { TaskAction } from "../state/actions/TaskActions";
 import { isEmptyOrSpaces } from "../utils/stringUtils";
 import { useAppState } from "../utils/useAppState";
 import AddNewItem from "./AddNewItem";
@@ -22,7 +22,7 @@ export const Column = (props: ColumnProps) => {
       return;
     }
     appState.dispatch({
-      type: ListActionType.AddTask,
+      type: TaskAction.CreateTask,
       payload: {
         listId: props.id,
         text: text,

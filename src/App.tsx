@@ -2,8 +2,8 @@ import { Column } from "./components/Column";
 import { AppContainer } from "./assets/styles";
 import AddNewItem from "./components/AddNewItem";
 import { useAppState } from "./utils/useAppState";
-import { ListActionType } from "./state/actions/ListAction";
 import { isEmptyOrSpaces } from "./utils/stringUtils";
+import { TaskAction } from "./state/actions/TaskActions";
 
 export function App() {
   const appState = useAppState();
@@ -14,7 +14,7 @@ export function App() {
       return;
     }
     appState.dispatch({
-      type: ListActionType.AddList,
+      type: TaskAction.CreateTaskList,
       payload: text,
     });
   };

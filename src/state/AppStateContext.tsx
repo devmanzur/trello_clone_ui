@@ -1,39 +1,39 @@
-import { createContext, useContext, FC } from "react";
+import { nanoid } from "nanoid";
+import { createContext } from "react";
 import { useImmerReducer } from "use-immer";
-import { appStateReducer } from "./AppStateReducer";
-import { TaskState } from "./models/TaskState";
-import { TaskStateContextProps } from "./models/TaskStateContextProps";
-
-interface AppStateProviderProps {
-  children: React.ReactNode;
-}
-
-const appData: TaskState = {
-  lists: [
-    {
-      listId: "0",
-      text: "To Do",
-      tasks: [{ taskId: "c0", text: "Generate app scaffold" }],
-    },
-    {
-      listId: "1",
-      text: "In Progress",
-      tasks: [{ taskId: "c2", text: "Learn Typescript" }],
-    },
-    {
-      listId: "2",
-      text: "Done",
-      tasks: [{ taskId: "c3", text: "Begin to use static typing" }],
-    },
-  ],
-};
+import { TaskState, TaskStateContextProps } from "./models/TaskModels";
+import { taskStateReducer } from "./reducers/TaskStateReducer";
 
 export const AppStateContext = createContext<TaskStateContextProps>(
   {} as TaskStateContextProps
 );
 
+interface AppStateProviderProps {
+  children: React.ReactNode;
+}
+
 export const AppStateProvider = ({ children }: AppStateProviderProps) => {
-  const [listState, dispatch] = useImmerReducer(appStateReducer, appData);
+  // initial state
+  let taskData: TaskState = {
+    lists: [
+      {
+        listId: nanoid(),
+        text: "Daily Tasks",
+        tasks: []
+      }, {
+        listId: nanoid(),
+        text: "Weekly Tasks",
+        tasks: []
+      }, {
+        listId: nanoid(),
+        text: "Office Tasks",
+        tasks: []
+      },
+    ],
+  };
+
+  //  set initial state with means to modify the state
+  const [listState, dispatch] = useImmerReducer(taskStateReducer, taskData);
   const { lists } = listState;
 
   const getTasksByListId = (listId: string) => {
@@ -41,8 +41,10 @@ export const AppStateProvider = ({ children }: AppStateProviderProps) => {
   };
 
   return (
-    <AppStateContext.Provider value={{ lists, getTasksByListId, dispatch }}>
-      {children}
-    </AppStateContext.Provider>
+    <div>
+      <AppStateContext.Provider value={{ lists, getTasksByListId, dispatch }}>
+        {children}
+      </AppStateContext.Provider>
+    </div>
   );
 };

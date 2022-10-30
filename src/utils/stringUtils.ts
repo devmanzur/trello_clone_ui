@@ -1,3 +1,3 @@
-export function isEmptyOrSpaces(str){
-    return str === null || str.match(/^ *$/) !== null;
+export function isEmptyOrSpaces(str: string) {
+  return str === null || str.match(/^ *$/) !== null;
 }
