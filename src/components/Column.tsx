@@ -1,7 +1,7 @@
 import { ColumnContainer, ColumnTitle } from "../assets/styles";
-import { TaskAction } from "../state/actions/TaskActions";
+import { addTask, TaskAction } from "../state/actions/TaskActions";
+import { useAppState } from "../state/AppStateContext";
 import { isEmptyOrSpaces } from "../utils/stringUtils";
-import { useAppState } from "../utils/useAppState";
 import AddNewItem from "./AddNewItem";
 import Card from "./Card";
 
@@ -21,13 +21,10 @@ export const Column = (props: ColumnProps) => {
       alert("Please add a valid Task name");
       return;
     }
-    appState.dispatch({
-      type: TaskAction.CreateTask,
-      payload: {
-        listId: props.id,
-        text: text,
-      },
-    });
+    appState.dispatch(addTask({
+      listId: props.id,
+      text: text,
+    }));
   };
 
   return (

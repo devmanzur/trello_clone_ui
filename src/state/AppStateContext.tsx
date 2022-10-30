@@ -1,5 +1,5 @@
 import { nanoid } from "nanoid";
-import { createContext } from "react";
+import { createContext, useContext } from "react";
 import { useImmerReducer } from "use-immer";
 import { TaskState, TaskStateContextProps } from "./models/TaskModels";
 import { taskStateReducer } from "./reducers/TaskStateReducer";
@@ -47,4 +47,8 @@ export const AppStateProvider = ({ children }: AppStateProviderProps) => {
       </AppStateContext.Provider>
     </div>
   );
+};
+
+export const useAppState = () => {
+  return useContext(AppStateContext);
 };

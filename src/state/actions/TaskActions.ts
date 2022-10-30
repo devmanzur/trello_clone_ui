@@ -1,6 +1,7 @@
 export enum TaskAction {
   CreateTaskList,
   CreateTask,
+  SwitchList,
 }
 
 export interface AddTaskPayload {
@@ -8,9 +9,19 @@ export interface AddTaskPayload {
   listId?: string;
 }
 
+export interface SwitchListPayload {
+  sourceListId: string;
+  destinationListId: string;
+}
+
 interface AddTaskAction {
   type: TaskAction.CreateTask;
   payload: AddTaskPayload;
+}
+
+interface SwitchListAction {
+  type: TaskAction.SwitchList;
+  payload: SwitchListPayload;
 }
 
 interface AddTaskListAction {
@@ -18,4 +29,25 @@ interface AddTaskListAction {
   payload: string;
 }
 
-export type TaskActions = AddTaskAction | AddTaskListAction;
+export type TaskActions = AddTaskAction | AddTaskListAction | SwitchListAction;
+
+export const addList = (payload: string): AddTaskListAction => {
+  return {
+    type: TaskAction.CreateTaskList,
+    payload,
+  };
+};
+
+export const addTask = (payload: AddTaskPayload): AddTaskAction => {
+  return {
+    type: TaskAction.CreateTask,
+    payload,
+  };
+};
+
+export const moveTask = (payload: SwitchListPayload): SwitchListAction => {
+  return {
+    type: TaskAction.SwitchList,
+    payload
+  };
+};
