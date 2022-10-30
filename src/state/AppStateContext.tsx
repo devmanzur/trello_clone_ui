@@ -30,11 +30,12 @@ export const AppStateProvider = ({ children }: AppStateProviderProps) => {
         tasks: []
       },
     ],
+    draggedItem: null
   };
 
   //  set initial state with means to modify the state
   const [listState, dispatch] = useImmerReducer(taskStateReducer, taskData);
-  const { lists } = listState;
+  const { lists, draggedItem } = listState;
 
   const getTasksByListId = (listId: string) => {
     return lists.find((list) => list.listId === listId)?.tasks || [];
@@ -42,7 +43,7 @@ export const AppStateProvider = ({ children }: AppStateProviderProps) => {
 
   return (
     <div>
-      <AppStateContext.Provider value={{ lists, getTasksByListId, dispatch }}>
+      <AppStateContext.Provider value={{ draggedItem, lists, getTasksByListId, dispatch }}>
         {children}
       </AppStateContext.Provider>
     </div>

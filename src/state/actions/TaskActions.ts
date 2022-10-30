@@ -1,7 +1,10 @@
+import { ColumnDragItem } from "../models/TaskModels";
+
 export enum TaskAction {
   CreateTaskList,
   CreateTask,
-  SwitchList,
+  ShiftList,
+  SetDraggedItem,
 }
 
 export interface AddTaskPayload {
@@ -9,7 +12,7 @@ export interface AddTaskPayload {
   listId?: string;
 }
 
-export interface SwitchListPayload {
+export interface ShiftListPayload {
   sourceListId: string;
   destinationListId: string;
 }
@@ -19,9 +22,9 @@ interface AddTaskAction {
   payload: AddTaskPayload;
 }
 
-interface SwitchListAction {
-  type: TaskAction.SwitchList;
-  payload: SwitchListPayload;
+interface ShiftListAction {
+  type: TaskAction.ShiftList;
+  payload: ShiftListPayload;
 }
 
 interface AddTaskListAction {
@@ -29,8 +32,27 @@ interface AddTaskListAction {
   payload: string;
 }
 
-export type TaskActions = AddTaskAction | AddTaskListAction | SwitchListAction;
+interface SetDraggedItemAction {
+  type: TaskAction.SetDraggedItem;
+  payload: ColumnDragItem | null;
+}
 
+export type TaskActions =
+  | AddTaskAction
+  | AddTaskListAction
+  | ShiftListAction
+  | SetDraggedItemAction;
+
+export const setDraggedItem = (
+  payload: ColumnDragItem | null
+): SetDraggedItemAction => {
+  return {
+    type: TaskAction.SetDraggedItem,
+    payload,
+  };
+};
+
+// action creators
 export const addList = (payload: string): AddTaskListAction => {
   return {
     type: TaskAction.CreateTaskList,
@@ -45,9 +67,9 @@ export const addTask = (payload: AddTaskPayload): AddTaskAction => {
   };
 };
 
-export const moveTask = (payload: SwitchListPayload): SwitchListAction => {
+export const shiftList = (payload: ShiftListPayload): ShiftListAction => {
   return {
-    type: TaskAction.SwitchList,
-    payload
+    type: TaskAction.ShiftList,
+    payload,
   };
 };

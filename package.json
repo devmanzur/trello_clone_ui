@@ -17,6 +17,7 @@
     "react-dom": "^18.2.0",
     "react-is": "^18.2.0",
     "styled-components": "^5.3.6",
+    "throttle-debounce-ts": "^1.1.1",
     "use-immer": "^0.7.0"
   },
   "devDependencies": {

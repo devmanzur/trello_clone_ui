@@ -2,7 +2,7 @@ import { nanoid } from "nanoid";
 import { moveItem } from "../../utils/arrayUtils";
 import {
   AddTaskPayload,
-  SwitchListPayload,
+  ShiftListPayload,
   TaskAction,
   TaskActions,
 } from "../actions/TaskActions";
@@ -21,8 +21,11 @@ export const taskStateReducer = (
       createTaskList(action.payload);
       break;
 
-    case TaskAction.SwitchList:
-      moveList(action.payload);
+    case TaskAction.ShiftList:
+      shiftList(action.payload);
+      break;
+    case TaskAction.SetDraggedItem:
+      draftState.draggedItem = action.payload;
       break;
 
     default:
@@ -53,7 +56,7 @@ export const taskStateReducer = (
     });
   }
 
-  function switchList(payload: SwitchListPayload) {
+  function shiftList(payload: ShiftListPayload) {
     const { sourceListId, destinationListId } = payload;
     const sourceListIndex = draftState.lists.findIndex(
       (x) => x.listId == sourceListId
