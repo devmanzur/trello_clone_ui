@@ -1,15 +1,17 @@
 html,
 body,
-:root{
-  height: 100%
+:root {
+  height: 100%;
+  padding: 0px !important;
+  margin: 0px !important;
 }
 
 *,
 *::before,
-*::after{
+*::after {
   box-sizing: inherit;
 }
 
-html{
+html {
   box-sizing: border-box;
 }

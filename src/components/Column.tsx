@@ -14,6 +14,7 @@ interface ColumnProps {
   id: string;
   text: string;
   children?: React.ReactNode;
+  isPreview?: boolean
 }
 
 export const Column = (props: ColumnProps) => {
@@ -60,7 +61,8 @@ export const Column = (props: ColumnProps) => {
   return (
     <ColumnContainer
       ref={ref}
-      isHidden={appState.draggedItem?.type == DragItemType.Column && appState.draggedItem.id == props.id}
+      isHidden={appState.draggedItem?.type == DragItemType.Column && appState.draggedItem.id == props.id && !props.isPreview}
+      isPreview={props.isPreview}
     >
       <ColumnTitle>{props.text}</ColumnTitle>
       {tasks.map((task) => (

@@ -1,4 +1,6 @@
+import { useEffect } from "react";
 import { useDrag } from "react-dnd";
+import { getEmptyImage } from "react-dnd-html5-backend";
 import { setDraggedItem } from "../state/actions/TaskActions";
 import { useAppState } from "../state/AppStateContext";
 import { ColumnDragItem } from "../state/models/TaskModels";
@@ -16,6 +18,10 @@ export const useItemDrag = (item: ColumnDragItem) => {
     // called When the dragging stops
     end: () => dispatch(setDraggedItem(null)),
   });
+
+  useEffect(() => {
+    preview(getEmptyImage(), { captureDraggingState: true });
+  }, [preview]);
 
   return { collectedProps, drag, preview };
 };
