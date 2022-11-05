@@ -1,9 +1,10 @@
 import { Column } from "./components/Column";
 import { AppContainer } from "./assets/styles";
 import AddNewItem from "./components/AddNewItem";
-import { useAppState } from "./utils/useAppState";
 import { isEmptyOrSpaces } from "./utils/stringUtils";
-import { TaskAction } from "./state/actions/TaskActions";
+import { addList } from "./state/actions/TaskActions";
+import { useAppState } from "./state/AppStateContext";
+import { CustomDragLayer } from "./components/CustomDragLayer";
 
 export function App() {
   const appState = useAppState();
@@ -13,14 +14,12 @@ export function App() {
       alert("Please add a valid List name");
       return;
     }
-    appState.dispatch({
-      type: TaskAction.CreateTaskList,
-      payload: text,
-    });
+    appState.dispatch(addList(text));
   };
 
   return (
     <AppContainer>
+      <CustomDragLayer />
       {appState.lists.map((column) => (
         <Column
           text={column.text}
