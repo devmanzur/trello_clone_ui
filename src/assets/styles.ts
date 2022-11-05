@@ -5,9 +5,12 @@ interface DragPreviewContainerProps {
   isPreview?: boolean;
 }
 
+// changing opacity to 0 results in both drag preview and default drag item view hidden
 export const DragPreviewContainer = styled.div<DragPreviewContainerProps>`
   transform: ${(props) => (props.isPreview ? "rotate(5deg)" : undefined)};
   opacity: ${(props) => (props.isHidden ? 0 : 1)};
+  border-style: ${(props) => (props.isPreview ? "dotted" : "none")};
+  border-color: red;
 `;
 
 export const AppContainer = styled.div`
@@ -19,7 +22,7 @@ export const AppContainer = styled.div`
   padding: 20px;
   width: 100%;
 `;
-
+// extends DragPreviewContainer
 export const ColumnContainer = styled(DragPreviewContainer)`
   background-color: #ebecf0;
   width: 300px;

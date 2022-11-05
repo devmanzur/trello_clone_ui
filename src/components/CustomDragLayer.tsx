@@ -5,12 +5,14 @@ import { Column } from "./Column";
 
 export const CustomDragLayer = () => {
     const { draggedItem } = useAppState();
+    //using this hook to monitor drag changes. and return the current position of dragged item
     const { currentOffset } = useDragLayer((monitor) => ({
         currentOffset: monitor.getSourceClientOffset()
     }));
 
     if (draggedItem && currentOffset) {
         return <CustomDragLayerContainer>
+            {/* moves the preview with drag axis value change */}
             <DragPreviewWrapper position={currentOffset}>
                 <Column
                     id={draggedItem.id}

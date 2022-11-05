@@ -61,7 +61,9 @@ export const Column = (props: ColumnProps) => {
   return (
     <ColumnContainer
       ref={ref}
+      // this container is usually hidden when drag starts, however, since we are re-using this same container as drag preview, we do not want to hide it
       isHidden={appState.draggedItem?.type == DragItemType.Column && appState.draggedItem.id == props.id && !props.isPreview}
+      // we also pass the preview prop to css so the preview is rotated 5 degrees
       isPreview={props.isPreview}
     >
       <ColumnTitle>{props.text}</ColumnTitle>

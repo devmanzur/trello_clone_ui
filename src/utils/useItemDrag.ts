@@ -19,8 +19,10 @@ export const useItemDrag = (item: ColumnDragItem) => {
     end: () => dispatch(setDraggedItem(null)),
   });
 
+  // applies side effect to  DragSource, we replace the default drag preview with empty image
+  // The preview function accepts an element or node to use as a drag preview, so we provide empty image as drag preview
   useEffect(() => {
-    preview(getEmptyImage(), { captureDraggingState: true });
+    preview(getEmptyImage());
   }, [preview]);
 
   return { collectedProps, drag, preview };
