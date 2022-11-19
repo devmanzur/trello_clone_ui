@@ -1,10 +1,11 @@
-import { ColumnDragItem } from "../models/TaskModels";
+import { DragItem } from "../models/TaskModels";
 
 export enum TaskAction {
   CreateTaskList,
   CreateTask,
-  ShiftList,
+  MoveList,
   SetDraggedItem,
+  MoveTask,
 }
 
 export interface AddTaskPayload {
@@ -12,7 +13,13 @@ export interface AddTaskPayload {
   listId?: string;
 }
 
-export interface ShiftListPayload {
+export interface MoveListPayload {
+  sourceListId: string;
+  destinationListId: string;
+}
+export interface MoveTaskPayload {
+  sourceTaskId: string;
+  destinationTaskId: string | null;
   sourceListId: string;
   destinationListId: string;
 }
@@ -22,9 +29,14 @@ interface AddTaskAction {
   payload: AddTaskPayload;
 }
 
-interface ShiftListAction {
-  type: TaskAction.ShiftList;
-  payload: ShiftListPayload;
+interface MoveListAction {
+  type: TaskAction.MoveList;
+  payload: MoveListPayload;
+}
+
+interface MoveTaskAction {
+  type: TaskAction.MoveTask;
+  payload: MoveTaskPayload;
 }
 
 interface AddTaskListAction {
@@ -34,17 +46,18 @@ interface AddTaskListAction {
 
 interface SetDraggedItemAction {
   type: TaskAction.SetDraggedItem;
-  payload: ColumnDragItem | null;
+  payload: DragItem | null;
 }
 
 export type TaskActions =
   | AddTaskAction
   | AddTaskListAction
-  | ShiftListAction
-  | SetDraggedItemAction;
+  | MoveListAction
+  | SetDraggedItemAction
+  | MoveTaskAction;
 
 export const setDraggedItem = (
-  payload: ColumnDragItem | null
+  payload: DragItem | null
 ): SetDraggedItemAction => {
   return {
     type: TaskAction.SetDraggedItem,
@@ -67,9 +80,16 @@ export const addTask = (payload: AddTaskPayload): AddTaskAction => {
   };
 };
 
-export const shiftList = (payload: ShiftListPayload): ShiftListAction => {
+export const moveList = (payload: MoveListPayload): MoveListAction => {
   return {
-    type: TaskAction.ShiftList,
+    type: TaskAction.MoveList,
+    payload,
+  };
+};
+
+export const moveTask = (payload: MoveTaskPayload): MoveTaskAction => {
+  return {
+    type: TaskAction.MoveTask,
     payload,
   };
 };

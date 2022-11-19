@@ -14,6 +14,7 @@ export interface TaskList {
 
 export enum DragItemType {
   Column,
+  Card,
 }
 
 export interface ColumnDragItem {
@@ -22,13 +23,22 @@ export interface ColumnDragItem {
   type: DragItemType.Column;
 }
 
+export interface CardDragItem {
+  id: string;
+  columnId: string;
+  text: string;
+  type: DragItemType.Card;
+}
+
+export type DragItem = CardDragItem | ColumnDragItem
+
 export interface TaskState {
   lists: TaskList[];
-  draggedItem: ColumnDragItem | null;
+  draggedItem: DragItem | null;
 }
 
 export interface TaskStateContextProps {
-  draggedItem: ColumnDragItem | null;
+  draggedItem: DragItem | null;
   lists: TaskList[];
   getTasksByListId(listId: string): Task[];
   dispatch: Dispatch<TaskActions>;

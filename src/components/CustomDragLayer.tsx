@@ -1,6 +1,8 @@
 import { useDragLayer } from "react-dnd";
 import { CustomDragLayerContainer, DragPreviewWrapper } from "../assets/styles";
 import { useAppState } from "../state/AppStateContext"
+import { DragItemType } from "../state/models/TaskModels";
+import { Card } from "./Card";
 import { Column } from "./Column";
 
 export const CustomDragLayer = () => {
@@ -14,12 +16,15 @@ export const CustomDragLayer = () => {
         return <CustomDragLayerContainer>
             {/* moves the preview with drag axis value change */}
             <DragPreviewWrapper position={currentOffset}>
-                <Column
-                    id={draggedItem.id}
-                    text={draggedItem.text}
-                    isPreview={true}
-                >
-                </Column>
+                {draggedItem.type == DragItemType.Card ?
+                    <Card text={draggedItem.text} id={draggedItem.id} columnId={draggedItem.columnId} isPreview={true} /> :
+                    <Column
+                        id={draggedItem.id}
+                        text={draggedItem.text}
+                        isPreview={true}
+                    >
+                    </Column>
+                }
             </DragPreviewWrapper>
         </CustomDragLayerContainer >
     }

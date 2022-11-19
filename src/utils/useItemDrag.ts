@@ -3,9 +3,9 @@ import { useDrag } from "react-dnd";
 import { getEmptyImage } from "react-dnd-html5-backend";
 import { setDraggedItem } from "../state/actions/TaskActions";
 import { useAppState } from "../state/AppStateContext";
-import { ColumnDragItem } from "../state/models/TaskModels";
+import { DragItem } from "../state/models/TaskModels";
 
-export const useItemDrag = (item: ColumnDragItem) => {
+export const useItemDrag = (item: DragItem) => {
   const { dispatch } = useAppState();
   const [collectedProps, drag, preview] = useDrag({
     // type of item being dragged
