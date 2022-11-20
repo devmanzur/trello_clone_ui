@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { useDrop } from "react-dnd";
 import { throttle } from "throttle-debounce-ts";
 import { ColumnContainer, ColumnTitle } from "../assets/styles";
-import { addTask, moveList } from "../state/actions/TaskActions";
+import { addTask, moveList, moveTask, setDraggedItem } from "../state/actions/TaskActions";
 import { useAppState } from "../state/AppStateContext";
 import { DragItemType } from "../state/models/TaskModels";
 import { isEmptyOrSpaces } from "../utils/stringUtils";
@@ -38,27 +38,40 @@ export const Column = (props: ColumnProps) => {
 
   // this column is being hoevered right now
   const onColumnHovered = () => {
-    
+
     // if we are not dragging anything and just hovering on something we skip the action
     if (!appState.draggedItem) {
       return;
     }
 
-    if (appState.draggedItem.type != DragItemType.Column) {
-      return;
+    if (appState.draggedItem.type == DragItemType.Column) {
+
+      // if the dragged list is being hovered on itself, there is no point in doing anything
+      if (appState.draggedItem.id == props.id) {
+        return;
+      }
+
+      appState.dispatch(moveList({ sourceListId: appState.draggedItem.id, destinationListId: props.id }));
     }
 
-    // if the dragged list is being hovered on itself, there is no point in doing anything
-    if (appState.draggedItem.id == props.id) {
-      return;
-    }
+    if (appState.draggedItem.type == DragItemType.Card) {
+      if (appState.draggedItem.columnId === props.id) {
+        return;
+      }
 
-    appState.dispatch(moveList({ sourceListId: appState.draggedItem.id, destinationListId: props.id }));
+      if (tasks.length > 0) {
+        return;
+      }
+
+      appState.dispatch(moveTask({ sourceTaskId: appState.draggedItem.id, destinationTaskId: null, sourceListId: appState.draggedItem.columnId, destinationListId: props.id }));
+
+      appState.dispatch(setDraggedItem({ ...appState.draggedItem, columnId: props.id }));
+    }
   };
 
   // if we are hovering on this column
   const [, drop] = useDrop({
-    accept: DragItemType.Column.toString(),
+    accept: [DragItemType.Column.toString(), DragItemType.Card.toString()],
     // action is triggered after hovering on it for 2 secs
     hover: throttle(200, onColumnHovered)
   });
